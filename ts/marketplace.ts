@@ -1,4 +1,8 @@
 class Marketplace {
+    constructor(){
+        this._items = this._setBaseItems();
+    }
+
     _items = [];
 
     _setBaseItems(){
@@ -6,10 +10,6 @@ class Marketplace {
         this.addItem({resource: 'Helium', price: '$100', quantity: 5});
         return this._items;
     };
-
-    constructor(){
-        this._items = this._setBaseItems();
-    }
 
     getItems(){
         return this._items;
@@ -44,6 +44,14 @@ class Marketplace {
             return this._items.length;
         }
     };
+
+    updateQty(itemName, quantity){
+        const itemIndex = this._items.indexOf(this.getItem(itemName));
+        const currentQuantity = this._items[itemIndex].quantity;
+        this._items[itemIndex].quantity = currentQuantity  >= (quantity * -1) ? currentQuantity + quantity : currentQuantity;
+
+        return this._items[itemIndex].quantity;
+    }
 };
 
 const marketplace = new Marketplace();
@@ -93,12 +101,30 @@ describe('addItem()', function(){
 
 describe('getQuantity()', function(){
     it('gets quantity of item in marker', function(){
-        wish(marketplace.getQuantity('Helium') == 5);
+        wish(marketplace.getQuantity('Helium') === 5);
     });
 });
 
 describe('getItem()', function(){
     it('returns a single item object', function(){
         wish(deepEqual(marketplace.getItem('Neon'), {resource: 'Neon', price: '$9000', quantity: 15}));
+    });
+});
+
+describe('updateQty()', function(){
+    it('removes given qty of item', function(){
+        wish(marketplace.updateQty('Thorium', -10) === 10);
+    });
+});
+
+describe('updateQty()', function(){
+    it('adds given qty of item', function(){
+        wish(marketplace.updateQty('Helium', 100) === 105);
+    });
+});
+
+describe('updateQty()', function(){
+    it('does not change qty of item', function(){
+        wish(marketplace.updateQty('Neon', -100) === 15);
     });
 });

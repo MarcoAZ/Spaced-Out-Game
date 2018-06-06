@@ -43,6 +43,12 @@ var Marketplace = /** @class */ (function () {
         }
     };
     ;
+    Marketplace.prototype.updateQty = function (itemName, quantity) {
+        var itemIndex = this._items.indexOf(this.getItem(itemName));
+        var currentQuantity = this._items[itemIndex].quantity;
+        this._items[itemIndex].quantity = currentQuantity >= (quantity * -1) ? currentQuantity + quantity : currentQuantity;
+        return this._items[itemIndex].quantity;
+    };
     return Marketplace;
 }());
 ;
@@ -85,12 +91,27 @@ describe('addItem()', function () {
 });
 describe('getQuantity()', function () {
     it('gets quantity of item in marker', function () {
-        wish(marketplace.getQuantity('Helium') == 5);
+        wish(marketplace.getQuantity('Helium') === 5);
     });
 });
 describe('getItem()', function () {
     it('returns a single item object', function () {
         wish(deepEqual(marketplace.getItem('Neon'), { resource: 'Neon', price: '$9000', quantity: 15 }));
+    });
+});
+describe('updateQty()', function () {
+    it('removes given qty of item', function () {
+        wish(marketplace.updateQty('Thorium', -10) === 10);
+    });
+});
+describe('updateQty()', function () {
+    it('adds given qty of item', function () {
+        wish(marketplace.updateQty('Helium', 100) === 105);
+    });
+});
+describe('updateQty()', function () {
+    it('does not change qty of item', function () {
+        wish(marketplace.updateQty('Neon', -100) === 15);
     });
 });
 //# sourceMappingURL=marketplace.js.map
