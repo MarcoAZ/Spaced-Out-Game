@@ -3,8 +3,24 @@ var Marketplace = /** @class */ (function () {
         this._items = [];
         this._items = this._setBaseItems();
     }
+    Marketplace.prototype._setBaseItems = function () {
+        this.addItem({ resource: 'Thorium', price: '$200', quantity: 20 });
+        this.addItem({ resource: 'Helium', price: '$100', quantity: 5 });
+        return this._items;
+    };
+    ;
     Marketplace.prototype.getItems = function () {
         return this._items;
+    };
+    ;
+    Marketplace.prototype.getItem = function (item) {
+        var foundItem = this._items.filter(function (marketplaceItem) { return marketplaceItem.resource === item; });
+        if (foundItem.length == 1) {
+            return foundItem[0];
+        }
+        else {
+            return { quantity: 0 };
+        }
     };
     ;
     Marketplace.prototype.getPrice = function (item) {
@@ -13,28 +29,18 @@ var Marketplace = /** @class */ (function () {
     };
     ;
     Marketplace.prototype.getQuantity = function (item) {
-        var foundItem = this._items.filter(function (marketplaceItem) { return marketplaceItem.resource === item; });
-        if (foundItem.length == 1) {
-            return foundItem[0].quantity;
-        }
-        else {
-            return foundItem.length;
-        }
+        var foundItem = this.getItem(item);
+        return foundItem.quantity;
     };
+    ;
     Marketplace.prototype.addItem = function (newItem) {
-        var foundItem = this._items.filter(function (marketplaceItem) { return marketplaceItem.resource === newItem.resource; });
-        if (foundItem.length == 0) {
+        var foundItem = this.getItem(newItem.resource);
+        if (foundItem.resource != newItem.resource) {
             return this._items.push(newItem);
         }
         else {
             return this._items.length;
         }
-    };
-    ;
-    Marketplace.prototype._setBaseItems = function () {
-        this.addItem({ resource: 'Thorium', price: '$200', quantity: 20 });
-        this.addItem({ resource: 'Helium', price: '$100', quantity: 5 });
-        return this._items;
     };
     ;
     return Marketplace;
@@ -71,9 +77,20 @@ describe('addItem()', function () {
         wish(marketplace.addItem({ resource: 'Neon', price: '$9000', quantity: 15 }) === previousLength + 1);
     });
 });
+describe('addItem()', function () {
+    it('fails to add a new item to the marketplace', function () {
+        var previousLength = marketplace._items.length;
+        wish(marketplace.addItem({ resource: 'Helium', price: '$9000', quantity: 15 }) === previousLength);
+    });
+});
 describe('getQuantity()', function () {
     it('gets quantity of item in marker', function () {
         wish(marketplace.getQuantity('Helium') == 5);
+    });
+});
+describe('getItem()', function () {
+    it('returns a single item object', function () {
+        wish(deepEqual(marketplace.getItem('Neon'), { resource: 'Neon', price: '$9000', quantity: 15 }));
     });
 });
 //# sourceMappingURL=marketplace.js.map
