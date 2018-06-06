@@ -14,6 +14,16 @@ class Marketplace {
         return foundItem[0].price;
     };
 
+    getQuantity(item){
+        const foundItem = this._items.filter(marketplaceItem => marketplaceItem.resource === item);
+        if(foundItem.length == 1){
+            return foundItem[0].quantity;
+        }
+        else{
+            return foundItem.length;
+        }
+    }
+
     addItem(newItem){
         const foundItem = this._items.filter(marketplaceItem => marketplaceItem.resource === newItem.resource);
         if(foundItem.length == 0){
@@ -25,8 +35,8 @@ class Marketplace {
     };
 
     _setBaseItems(){
-        this.addItem({resource: 'Thorium', price: '$200'});
-        this.addItem({resource: 'Helium', price: '$100'});
+        this.addItem({resource: 'Thorium', price: '$200', quantity: 20});
+        this.addItem({resource: 'Helium', price: '$100', quantity: 5});
         return this._items;
     };
 };
@@ -38,8 +48,8 @@ const deepEqual = require('deep-equal');
 
 describe('_setBaseItems()', function(){
     it('loads the base items of the game', function(){
-        wish(deepEqual(marketplace._setBaseItems(), [{resource:'Thorium', price: '$200'},
-        {resource: 'Helium', price: '$100'}]));
+        wish(deepEqual(marketplace._setBaseItems(), [{resource:'Thorium', price: '$200', quantity: 20},
+                                                     {resource: 'Helium', price: '$100', quantity: 5}]));
     });
 });
 
@@ -57,14 +67,20 @@ describe('getPrice()', function () {
 
 describe('getItems()', function(){
     it('gets the marketplace items', function(){
-        wish(deepEqual(marketplace.getItems(), [{resource:'Thorium', price: '$200'},
-        {resource: 'Helium', price: '$100'}]));
+        wish(deepEqual(marketplace.getItems(), [{resource:'Thorium', price: '$200', quantity: 20},
+                                                {resource: 'Helium', price: '$100', quantity: 5}]));
     });
 });
 
 describe('addItem()', function(){
     it('adds a new item to the marketplace', function(){
         const previousLength = marketplace._items.length;
-        wish(marketplace.addItem({resource: 'Neon', price: '$9000'}) === previousLength+1)
+        wish(marketplace.addItem({resource: 'Neon', price: '$9000', quantity: 15}) === previousLength+1)
+    });
+});
+
+describe('getQuantity()', function(){
+    it('gets quantity of item in marker', function(){
+        wish(marketplace.getQuantity('Helium') == 5);
     });
 });
