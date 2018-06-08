@@ -1,7 +1,7 @@
 class Marketplace {
     constructor(){
         this._items = this._setBaseItems();
-    }
+    };
 
     _items = [];
 
@@ -56,8 +56,8 @@ class Marketplace {
 
 const marketplace = new Marketplace();
 
-const wish = require('wish');
-const deepEqual = require('deep-equal');
+let wish = require('wish');
+let deepEqual = require('deep-equal');
 
 describe('_setBaseItems()', function(){
     it('loads the base items of the game', function(){

@@ -3,6 +3,7 @@ var Marketplace = /** @class */ (function () {
         this._items = [];
         this._items = this._setBaseItems();
     }
+    ;
     Marketplace.prototype._setBaseItems = function () {
         this.addItem({ resource: 'Thorium', price: '$200', quantity: 20 });
         this.addItem({ resource: 'Helium', price: '$100', quantity: 5 });
