@@ -20,7 +20,7 @@ var Marketplace = /** @class */ (function () {
             return foundItem[0];
         }
         else {
-            return { quantity: 0 };
+            return { resource: item, quantity: 0 };
         }
     };
     ;
