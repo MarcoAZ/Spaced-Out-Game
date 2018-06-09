@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Marketplace = /** @class */ (function () {
     function Marketplace() {
         this._items = [];
@@ -20,7 +22,7 @@ var Marketplace = /** @class */ (function () {
             return foundItem[0];
         }
         else {
-            return { resource: item, quantity: 0 };
+            return { resource: null, quantity: 0 };
         }
     };
     ;
@@ -52,6 +54,7 @@ var Marketplace = /** @class */ (function () {
     };
     return Marketplace;
 }());
+exports.Marketplace = Marketplace;
 ;
 var marketplace = new Marketplace();
 var wish = require('wish');

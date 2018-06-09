@@ -1,4 +1,4 @@
-class Marketplace {
+export class Marketplace {
     constructor(){
         this._items = this._setBaseItems();
     };
@@ -21,7 +21,7 @@ class Marketplace {
             return foundItem[0];
         }
         else{
-            return {resource: item, quantity: 0};
+            return {resource: null, quantity: 0};
         }
     };
 
@@ -54,7 +54,7 @@ class Marketplace {
     }
 };
 
-const marketplace = new Marketplace();
+let marketplace = new Marketplace();
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
