@@ -48,14 +48,12 @@ exports.GameHandler = GameHandler;
 var gameHandler = new GameHandler();
 var ship = new ship_1.Ship();
 var marketplace = new marketplace_1.Marketplace();
-ship.setGameHandler(gameHandler);
 var wish = require('wish');
 var deepEqual = require('deep-equal');
 describe('setCurrentShip()', function () {
     it('sets ship to current ship', function () {
         wish(deepEqual(gameHandler.setCurrentShip(ship), { _items: [{ resource: 'Water', quantity: 10 }],
-            _cash: 1000,
-            gameHandler: gameHandler }));
+            _cash: 1000 }));
     });
 });
 describe('setCurrentMarketplace()', function () {

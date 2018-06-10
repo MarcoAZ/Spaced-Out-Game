@@ -12,10 +12,6 @@ var Ship = /** @class */ (function () {
         return this._items;
     };
     ;
-    Ship.prototype.setGameHandler = function (gh) {
-        this.gameHandler = gh;
-    };
-    ;
     Ship.prototype.addItem = function (newItem) {
         var foundItem = this.getItem(newItem.resource);
         if (foundItem.resource != newItem.resource) {

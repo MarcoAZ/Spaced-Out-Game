@@ -1,22 +1,14 @@
-import {GameHandler} from './GameHandler';
-import { Marketplace } from './marketplace';
-
 export class Ship {
     constructor(){
         this._items = this._setBaseItems();
     };
 
-    gameHandler; 
     _items = [];
     _cash = 1000;
 
     _setBaseItems(){
         this.addItem({resource: 'Water', quantity: 10});
         return this._items;
-    };
-
-    setGameHandler(gh){
-        this.gameHandler = gh;
     };
 
     addItem(newItem){
