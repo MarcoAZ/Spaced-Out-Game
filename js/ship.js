@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Ship = /** @class */ (function () {
     function Ship() {
         this._items = [];
-        this._cash = 0;
+        this._cash = 1000;
         this._items = this._setBaseItems();
     }
     ;
@@ -79,7 +79,7 @@ describe('getItems()', function () {
 });
 describe('getCash()', function () {
     it('gets the ship cash', function () {
-        wish(ship.getCash() === 0);
+        wish(ship.getCash() === 1000);
     });
 });
 describe('getItem()', function () {
@@ -94,8 +94,8 @@ describe('spaceCargo()', function () {
 });
 describe('updateCash()', function () {
     it('updates the ship wallet', function () {
-        wish(ship.updateCash(50) === 50);
-        wish(ship.updateCash(-25) === 25);
+        wish(ship.updateCash(50) === 1050);
+        wish(ship.updateCash(-25) === 1025);
     });
 });
 //# sourceMappingURL=ship.js.map

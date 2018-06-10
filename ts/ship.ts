@@ -8,7 +8,7 @@ export class Ship {
 
     gameHandler; 
     _items = [];
-    _cash = 0;
+    _cash = 1000;
 
     _setBaseItems(){
         this.addItem({resource: 'Water', quantity: 10});
@@ -86,7 +86,7 @@ describe('getItems()', function(){
 
 describe('getCash()', function(){
     it('gets the ship cash', function(){
-        wish(ship.getCash() === 0);
+        wish(ship.getCash() === 1000);
     });
 });
 
@@ -104,7 +104,7 @@ describe('spaceCargo()', function(){
 
 describe('updateCash()', function(){
     it('updates the ship wallet', function(){
-        wish(ship.updateCash(50) === 50);
-        wish(ship.updateCash(-25) === 25);
+        wish(ship.updateCash(50) === 1050);
+        wish(ship.updateCash(-25) === 1025);
     });
 });

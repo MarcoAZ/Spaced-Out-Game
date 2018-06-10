@@ -6,8 +6,8 @@ export class Marketplace {
     _items = [];
 
     _setBaseItems(){
-        this.addItem({resource: 'Thorium', price: '$200', quantity: 20});
-        this.addItem({resource: 'Helium', price: '$100', quantity: 5});
+        this.addItem({resource: 'Thorium', price: 200, quantity: 20});
+        this.addItem({resource: 'Helium', price: 100, quantity: 5});
         return this._items;
     };
 
@@ -61,41 +61,41 @@ let deepEqual = require('deep-equal');
 
 describe('_setBaseItems()', function(){
     it('loads the base items of the game', function(){
-        wish(deepEqual(marketplace._setBaseItems(), [{resource:'Thorium', price: '$200', quantity: 20},
-                                                     {resource: 'Helium', price: '$100', quantity: 5}]));
+        wish(deepEqual(marketplace._setBaseItems(), [{resource:'Thorium', price: 200, quantity: 20},
+                                                     {resource: 'Helium', price: 100, quantity: 5}]));
     });
 });
 
 describe('getPrice()', function () {
     it('returns the base price of Helium', function(){
-        wish(marketplace.getPrice('Helium') === '$100');
+        wish(marketplace.getPrice('Helium') === 100);
     });
 });
 
 describe('getPrice()', function () {
     it('returns the base price of Thorium', function(){
-        wish(marketplace.getPrice('Thorium') === '$200');
+        wish(marketplace.getPrice('Thorium') === 200);
     });
 });
 
 describe('getItems()', function(){
     it('gets the marketplace items', function(){
-        wish(deepEqual(marketplace.getItems(), [{resource:'Thorium', price: '$200', quantity: 20},
-                                                {resource: 'Helium', price: '$100', quantity: 5}]));
+        wish(deepEqual(marketplace.getItems(), [{resource:'Thorium', price: 200, quantity: 20},
+                                                {resource: 'Helium', price: 100, quantity: 5}]));
     });
 });
 
 describe('addItem()', function(){
     it('adds a new item to the marketplace', function(){
         const previousLength = marketplace._items.length;
-        wish(marketplace.addItem({resource: 'Neon', price: '$9000', quantity: 15}) === previousLength+1)
+        wish(marketplace.addItem({resource: 'Neon', price: 9000, quantity: 15}) === previousLength+1)
     });
 });
 
 describe('addItem()', function(){
     it('fails to add a new item to the marketplace', function(){
         const previousLength = marketplace._items.length;
-        wish(marketplace.addItem({resource: 'Helium', price: '$9000', quantity: 15}) === previousLength)
+        wish(marketplace.addItem({resource: 'Helium', price: 9000, quantity: 15}) === previousLength)
     });
 });
 
@@ -107,7 +107,7 @@ describe('getQuantity()', function(){
 
 describe('getItem()', function(){
     it('returns a single item object', function(){
-        wish(deepEqual(marketplace.getItem('Neon'), {resource: 'Neon', price: '$9000', quantity: 15}));
+        wish(deepEqual(marketplace.getItem('Neon'), {resource: 'Neon', price: 9000, quantity: 15}));
     });
 });
 
