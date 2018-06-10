@@ -54,6 +54,11 @@ var Ship = /** @class */ (function () {
         return this._items;
     };
     ;
+    Ship.prototype.getQuantity = function (item) {
+        var foundItem = this.getItem(item);
+        return foundItem.quantity;
+    };
+    ;
     Ship.prototype.updateQty = function (itemName, quantity) {
         var itemIndex = this._items.indexOf(this.getItem(itemName));
         var currentQuantity = this._items[itemIndex].quantity;
@@ -75,6 +80,11 @@ describe('_setBaseItems()', function () {
 describe('getItems()', function () {
     it('gets the cargo items', function () {
         wish(deepEqual(ship.getItems(), [{ resource: 'Water', quantity: 10 }]));
+    });
+});
+describe('getQuantity()', function () {
+    it('gets quantity of item', function () {
+        wish(ship.getQuantity('Water') === 10);
     });
 });
 describe('getCash()', function () {

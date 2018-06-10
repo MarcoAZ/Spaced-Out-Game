@@ -58,6 +58,11 @@ export class Ship {
         return this._items;
     };
 
+    getQuantity(item){
+        const foundItem = this.getItem(item);
+        return foundItem.quantity;
+    };
+
     updateQty(itemName: string, quantity: number){
         const itemIndex = this._items.indexOf(this.getItem(itemName));
         const currentQuantity = this._items[itemIndex].quantity;
@@ -83,6 +88,12 @@ describe('getItems()', function(){
         wish(deepEqual(ship.getItems(), [{resource: 'Water', quantity: 10}]));
     });
 });
+
+describe('getQuantity()', function(){
+    it('gets quantity of item', function(){
+        wish(ship.getQuantity('Water') === 10);
+    })
+})
 
 describe('getCash()', function(){
     it('gets the ship cash', function(){

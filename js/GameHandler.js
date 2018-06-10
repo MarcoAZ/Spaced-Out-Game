@@ -31,6 +31,16 @@ var GameHandler = /** @class */ (function () {
         }
         return false;
     };
+    GameHandler.prototype.sellingItem = function (itemName, quantity) {
+        if (quantity <= this.currentShip.getQuantity(itemName) && quantity > 0) {
+            var revenue = this.cuurentMarketplace.getPrice(itemName) * quantity;
+            this.currentShip.updateCash(revenue);
+            this.currentShip.updateQty(itemName, quantity * -1);
+            this.cuurentMarketplace.updateQty(itemName, quantity);
+            return true;
+        }
+        return false;
+    };
     return GameHandler;
 }());
 exports.GameHandler = GameHandler;
@@ -68,6 +78,19 @@ describe('buyingItem()', function () {
             { resource: 'Helium', quantity: 5 }]));
         wish(shipCashBefore - 500 === gameHandler.currentShip.getCash());
         wish(marketQtyBefore - 5 === gameHandler.cuurentMarketplace.getQuantity('Helium'));
+    });
+});
+describe('sellingItem()', function () {
+    it('sells ship items to the Marketplace', function () {
+        var shipCashBefore = gameHandler.currentShip.getCash();
+        var thorium = { resource: 'Thorium', quantity: 1 };
+        ship.addItem({ resource: 'Thorium', quantity: 1 });
+        var marketQtyBefore = gameHandler.cuurentMarketplace.getQuantity('Thorium');
+        var shipQtyBefore = gameHandler.currentShip.getQuantity('Thorium');
+        wish(gameHandler.sellingItem(thorium.resource, thorium.quantity) === true);
+        wish(gameHandler.currentShip.getCash() - shipCashBefore === gameHandler.cuurentMarketplace.getPrice('Thorium'));
+        wish(gameHandler.cuurentMarketplace.getQuantity('Thorium') - 1 === marketQtyBefore);
+        wish(gameHandler.currentShip.getQuantity('Thorium') + 1 === shipQtyBefore);
     });
 });
 //# sourceMappingURL=GameHandler.js.map

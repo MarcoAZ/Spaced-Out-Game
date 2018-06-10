@@ -37,6 +37,17 @@ export class GameHandler {
         }
         return false;
     }
+
+    sellingItem(itemName: string, quantity: number){
+        if(quantity <= this.currentShip.getQuantity(itemName) && quantity > 0){
+            const revenue = this.cuurentMarketplace.getPrice(itemName) * quantity;
+            this.currentShip.updateCash(revenue);
+            this.currentShip.updateQty(itemName, quantity * -1);
+            this.cuurentMarketplace.updateQty(itemName, quantity);
+            return true;
+        }
+        return false;
+    }
 };
 
 let gameHandler = new GameHandler();
@@ -80,6 +91,21 @@ describe('buyingItem()', function(){
                                                               { resource: 'Helium', quantity: 5 }] ));
         wish(shipCashBefore - 500 === gameHandler.currentShip.getCash());
         wish(marketQtyBefore - 5 === gameHandler.cuurentMarketplace.getQuantity('Helium'));
+    });
+});
+
+describe('sellingItem()', function(){
+    it('sells ship items to the Marketplace', function(){
+        let shipCashBefore = gameHandler.currentShip.getCash();
+        const thorium = {resource: 'Thorium', quantity: 1};
+        ship.addItem({resource: 'Thorium', quantity: 1});
+        let marketQtyBefore = gameHandler.cuurentMarketplace.getQuantity('Thorium');
+        let shipQtyBefore = gameHandler.currentShip.getQuantity('Thorium');
+
+        wish(gameHandler.sellingItem(thorium.resource, thorium.quantity) === true);
+        wish(gameHandler.currentShip.getCash() - shipCashBefore === gameHandler.cuurentMarketplace.getPrice('Thorium'));
+        wish(gameHandler.cuurentMarketplace.getQuantity('Thorium') - 1  === marketQtyBefore);
+        wish(gameHandler.currentShip.getQuantity('Thorium') + 1  === shipQtyBefore);
     });
 });
 
