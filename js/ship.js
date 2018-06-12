@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ship = /** @class */ (function () {
-    function Ship() {
+    function Ship(location) {
         this._items = [];
         this._cash = 1000;
         this._items = this._setBaseItems();
+        this._location = location;
     }
     ;
     Ship.prototype._setBaseItems = function () {
@@ -61,11 +62,15 @@ var Ship = /** @class */ (function () {
         this._items[itemIndex].quantity = currentQuantity >= (quantity * -1) ? currentQuantity + quantity : currentQuantity;
         return this._items[itemIndex].quantity;
     };
+    Ship.prototype.setLocation = function (newLocation) {
+        this._location = newLocation;
+        return this._location;
+    };
     return Ship;
 }());
 exports.Ship = Ship;
 ;
-var ship = new Ship();
+var ship = new Ship('Start');
 var wish = require('wish');
 var deepEqual = require('deep-equal');
 describe('_setBaseItems()', function () {
@@ -102,6 +107,12 @@ describe('updateCash()', function () {
     it('updates the ship wallet', function () {
         wish(ship.updateCash(50) === 1050);
         wish(ship.updateCash(-25) === 1025);
+    });
+});
+describe('setLocation()', function () {
+    it('sets new ship location', function () {
+        var loc = 'Home';
+        wish(ship.setLocation(loc) === loc);
     });
 });
 //# sourceMappingURL=ship.js.map

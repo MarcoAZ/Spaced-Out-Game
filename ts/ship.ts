@@ -1,10 +1,12 @@
 export class Ship {
-    constructor(){
+    constructor(location: string){
         this._items = this._setBaseItems();
+        this._location = location;
     };
 
     _items = [];
     _cash = 1000;
+    _location;
 
     _setBaseItems(){
         this.addItem({resource: 'Water', quantity: 10});
@@ -62,9 +64,14 @@ export class Ship {
 
         return this._items[itemIndex].quantity;
     }
+
+    setLocation(newLocation: string){
+        this._location = newLocation;
+        return this._location;
+    }
 };
 
-let ship = new Ship();
+let ship = new Ship('Start');
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
@@ -109,5 +116,12 @@ describe('updateCash()', function(){
     it('updates the ship wallet', function(){
         wish(ship.updateCash(50) === 1050);
         wish(ship.updateCash(-25) === 1025);
+    });
+});
+
+describe('setLocation()', function(){
+    it('sets new ship location', function(){
+        const loc = 'Home';
+        wish(ship.setLocation(loc) === loc);
     });
 });

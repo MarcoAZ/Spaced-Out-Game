@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Marketplace = /** @class */ (function () {
-    function Marketplace() {
+    function Marketplace(name) {
         this._items = [];
         this._items = this._setBaseItems();
+        this.name = name;
     }
     ;
     Marketplace.prototype._setBaseItems = function () {
@@ -56,7 +57,7 @@ var Marketplace = /** @class */ (function () {
 }());
 exports.Marketplace = Marketplace;
 ;
-var marketplace = new Marketplace();
+var marketplace = new Marketplace('Start');
 var wish = require('wish');
 var deepEqual = require('deep-equal');
 describe('_setBaseItems()', function () {

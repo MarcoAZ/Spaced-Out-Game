@@ -1,6 +1,11 @@
 import {Ship} from './ship';
 import { Marketplace } from './marketplace';
 
+export enum locations {
+    start = "Start",
+    kandinsky = 'Kandinsky Station'
+}
+
 export class GameHandler {
     currentShip;
     cuurentMarketplace;
@@ -51,24 +56,21 @@ export class GameHandler {
 };
 
 let gameHandler = new GameHandler();
-let ship = new Ship();
-let marketplace = new Marketplace();
+let ship = new Ship(locations.start);
+let marketplace = new Marketplace(locations.start);
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
 
 describe('setCurrentShip()', function(){
     it('sets ship to current ship', function(){
-        wish(deepEqual(gameHandler.setCurrentShip(ship), {_items: [ { resource: 'Water', quantity: 10 } ],
-                                                    _cash: 1000 }));
+        wish(!deepEqual(gameHandler.setCurrentShip(ship), {}));
     });
 });
 
 describe('setCurrentMarketplace()', function(){
     it('sets current marketplace', function(){
-        wish(deepEqual(gameHandler.setCurrentMarketplace(marketplace), 
-                {_items: [  {resource:'Thorium', price: 200, quantity: 20},
-                            {resource: 'Helium', price: 100, quantity: 5 }   ]}));
+        wish(!deepEqual(gameHandler.setCurrentMarketplace(marketplace), {}));
     });
 });
 

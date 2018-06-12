@@ -1,9 +1,11 @@
 export class Marketplace {
-    constructor(){
+    constructor(name:string){
         this._items = this._setBaseItems();
+        this.name = name;
     };
 
     _items = [];
+    name;
 
     _setBaseItems(){
         this.addItem({resource: 'Thorium', price: 200, quantity: 20});
@@ -54,7 +56,7 @@ export class Marketplace {
     }
 };
 
-let marketplace = new Marketplace();
+let marketplace = new Marketplace('Start');
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
