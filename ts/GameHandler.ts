@@ -2,23 +2,23 @@ import {Ship} from './ship';
 import { Marketplace } from './marketplace';
 
 export enum locations {
-    start = "Start",
-    kandinsky = 'Kandinsky Station'
+    "Start",
+    'Kandinsky Station'
 }
 
 export class GameHandler {
     currentShip;
-    cuurentMarketplace;
-    gameLocations;
+    currentMarketplace;
+    gameLocations = [];
 
     constructor(){
         this.currentShip = {};
-        this.gameLocations = [];
+        this.createMarkets(); 
     }
 
     setCurrentMarketplace(marketplace: Marketplace){
-        this.cuurentMarketplace = marketplace;
-        return this.cuurentMarketplace;
+        this.currentMarketplace = marketplace;
+        return this.currentMarketplace;
         
     }
 
@@ -30,13 +30,17 @@ export class GameHandler {
     createMarkets(){
         for(let market in Object.keys(locations))
         {
-            this.gameLocations.push(market);
+            if(locations[market] != undefined){
+                let newMarket = new Marketplace(locations[market]);
+                this.gameLocations.push(newMarket);
+            }
         }
+        return this.gameLocations;
     }
 
     buyingItem(itemName: string, quantity: number){
-        if(quantity <= this.cuurentMarketplace.getQuantity(itemName)){
-            const cost = this.cuurentMarketplace.getPrice(itemName) * quantity;
+        if(quantity <= this.currentMarketplace.getQuantity(itemName)){
+            const cost = this.currentMarketplace.getPrice(itemName) * quantity;
             if(cost <= this.currentShip.getCash()){
                 if(this.currentShip.getItem(itemName).resource === null){
                     this.currentShip.addItem({resource: itemName, quantity: quantity});
@@ -45,7 +49,7 @@ export class GameHandler {
                     this.currentShip.updateQty(itemName, quantity);
                 }
                 this.currentShip.updateCash(cost * -1);
-                this.cuurentMarketplace.updateQty(itemName, quantity * -1);
+                this.currentMarketplace.updateQty(itemName, quantity * -1);
                 return true;
             }
         }
@@ -54,12 +58,13 @@ export class GameHandler {
 
     sellingItem(itemName: string, quantity: number){
         if(quantity <= this.currentShip.getQuantity(itemName) && quantity > 0){
-            const revenue = this.cuurentMarketplace.getPrice(itemName) * quantity;
+            const revenue = this.currentMarketplace.getPrice(itemName) * quantity;
             this.currentShip.updateCash(revenue);
             this.currentShip.updateQty(itemName, quantity * -1);
-            this.cuurentMarketplace.updateQty(itemName, quantity);
+            this.currentMarketplace.updateQty(itemName, quantity);
             return true;
         }
         return false;
     }
+
 };

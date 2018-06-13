@@ -5,8 +5,8 @@ var marketplace_1 = require("./marketplace");
 var GameHandler_1 = require("./GameHandler");
 var GameHandler_2 = require("./GameHandler");
 var gameHandler = new GameHandler_1.GameHandler();
-var ship = new ship_1.Ship(GameHandler_2.locations.start);
-var marketplace = new marketplace_1.Marketplace(GameHandler_2.locations.start);
+var ship = new ship_1.Ship(GameHandler_2.locations['Start'].toString());
+var marketplace = new marketplace_1.Marketplace(GameHandler_2.locations['Start'].toString());
 var wish = require('wish');
 var deepEqual = require('deep-equal');
 describe('_setBaseItems()', function () {
@@ -112,7 +112,8 @@ describe('updateQty()', function () {
 });
 describe('setCurrentShip()', function () {
     it('sets ship to current ship', function () {
-        wish(!deepEqual(gameHandler.setCurrentShip(ship), {}));
+        var currentShip = gameHandler.setCurrentShip(ship);
+        wish(!deepEqual(currentShip, {}));
     });
 });
 describe('setCurrentMarketplace()', function () {
@@ -128,12 +129,12 @@ describe('currentShip.getCash()', function () {
 describe('buyingItem()', function () {
     it('adds quantity of item to ship and charges the cost', function () {
         var shipCashBefore = gameHandler.currentShip.getCash();
-        var marketQtyBefore = gameHandler.cuurentMarketplace.getQuantity('Helium');
+        var marketQtyBefore = gameHandler.currentMarketplace.getQuantity('Helium');
         wish(gameHandler.buyingItem('Helium', 5) === true);
         var shipItems = gameHandler.currentShip.getItems();
         wish(shipItems.filter(function (helium) { return helium.resource === 'Helium'; }).length === 1);
         wish(shipCashBefore - 500 === gameHandler.currentShip.getCash());
-        wish(marketQtyBefore - 5 === gameHandler.cuurentMarketplace.getQuantity('Helium'));
+        wish(marketQtyBefore - 5 === gameHandler.currentMarketplace.getQuantity('Helium'));
     });
 });
 describe('sellingItem()', function () {
@@ -141,12 +142,19 @@ describe('sellingItem()', function () {
         var shipCashBefore = gameHandler.currentShip.getCash();
         var thorium = { resource: 'Thorium', quantity: 1 };
         ship.addItem({ resource: 'Thorium', quantity: 1 });
-        var marketQtyBefore = gameHandler.cuurentMarketplace.getQuantity('Thorium');
+        var marketQtyBefore = gameHandler.currentMarketplace.getQuantity('Thorium');
         var shipQtyBefore = gameHandler.currentShip.getQuantity('Thorium');
         wish(gameHandler.sellingItem(thorium.resource, thorium.quantity) === true);
-        wish(gameHandler.currentShip.getCash() - shipCashBefore === gameHandler.cuurentMarketplace.getPrice('Thorium'));
-        wish(gameHandler.cuurentMarketplace.getQuantity('Thorium') - 1 === marketQtyBefore);
+        wish(gameHandler.currentShip.getCash() - shipCashBefore === gameHandler.currentMarketplace.getPrice('Thorium'));
+        wish(gameHandler.currentMarketplace.getQuantity('Thorium') - 1 === marketQtyBefore);
         wish(gameHandler.currentShip.getQuantity('Thorium') + 1 === shipQtyBefore);
+    });
+});
+describe('createMarkets()', function () {
+    it('initiates market locations with at least 2 locations', function () {
+        var testGH = new GameHandler_1.GameHandler();
+        console.log(testGH.gameLocations);
+        wish(testGH.gameLocations.length > 1);
     });
 });
 //# sourceMappingURL=UnitTests.js.map

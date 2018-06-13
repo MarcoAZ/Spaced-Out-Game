@@ -1,18 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var marketplace_1 = require("./marketplace");
 var locations;
 (function (locations) {
-    locations["start"] = "Start";
-    locations["kandinsky"] = "Kandinsky Station";
+    locations[locations["Start"] = 0] = "Start";
+    locations[locations["Kandinsky Station"] = 1] = "Kandinsky Station";
 })(locations = exports.locations || (exports.locations = {}));
 var GameHandler = /** @class */ (function () {
     function GameHandler() {
-        this.currentShip = {};
         this.gameLocations = [];
+        this.currentShip = {};
+        this.createMarkets();
     }
     GameHandler.prototype.setCurrentMarketplace = function (marketplace) {
-        this.cuurentMarketplace = marketplace;
-        return this.cuurentMarketplace;
+        this.currentMarketplace = marketplace;
+        return this.currentMarketplace;
     };
     GameHandler.prototype.setCurrentShip = function (ship) {
         this.currentShip = ship;
@@ -20,12 +22,16 @@ var GameHandler = /** @class */ (function () {
     };
     GameHandler.prototype.createMarkets = function () {
         for (var market in Object.keys(locations)) {
-            this.gameLocations.push(market);
+            if (locations[market] != undefined) {
+                var newMarket = new marketplace_1.Marketplace(locations[market]);
+                this.gameLocations.push(newMarket);
+            }
         }
+        return this.gameLocations;
     };
     GameHandler.prototype.buyingItem = function (itemName, quantity) {
-        if (quantity <= this.cuurentMarketplace.getQuantity(itemName)) {
-            var cost = this.cuurentMarketplace.getPrice(itemName) * quantity;
+        if (quantity <= this.currentMarketplace.getQuantity(itemName)) {
+            var cost = this.currentMarketplace.getPrice(itemName) * quantity;
             if (cost <= this.currentShip.getCash()) {
                 if (this.currentShip.getItem(itemName).resource === null) {
                     this.currentShip.addItem({ resource: itemName, quantity: quantity });
@@ -34,7 +40,7 @@ var GameHandler = /** @class */ (function () {
                     this.currentShip.updateQty(itemName, quantity);
                 }
                 this.currentShip.updateCash(cost * -1);
-                this.cuurentMarketplace.updateQty(itemName, quantity * -1);
+                this.currentMarketplace.updateQty(itemName, quantity * -1);
                 return true;
             }
         }
@@ -42,10 +48,10 @@ var GameHandler = /** @class */ (function () {
     };
     GameHandler.prototype.sellingItem = function (itemName, quantity) {
         if (quantity <= this.currentShip.getQuantity(itemName) && quantity > 0) {
-            var revenue = this.cuurentMarketplace.getPrice(itemName) * quantity;
+            var revenue = this.currentMarketplace.getPrice(itemName) * quantity;
             this.currentShip.updateCash(revenue);
             this.currentShip.updateQty(itemName, quantity * -1);
-            this.cuurentMarketplace.updateQty(itemName, quantity);
+            this.currentMarketplace.updateQty(itemName, quantity);
             return true;
         }
         return false;
