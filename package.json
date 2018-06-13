@@ -16,7 +16,7 @@
     "ts-mocha": "^1.2.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha ./js/UnitTests.js"
   },
   "keywords": [],
   "author": "",

@@ -70,49 +70,4 @@ var Ship = /** @class */ (function () {
 }());
 exports.Ship = Ship;
 ;
-var ship = new Ship('Start');
-var wish = require('wish');
-var deepEqual = require('deep-equal');
-describe('_setBaseItems()', function () {
-    it('loads the base items of the game', function () {
-        wish(deepEqual(ship._setBaseItems(), [{ resource: 'Water', quantity: 10 }]));
-    });
-});
-describe('getItems()', function () {
-    it('gets the cargo items', function () {
-        wish(deepEqual(ship.getItems(), [{ resource: 'Water', quantity: 10 }]));
-    });
-});
-describe('getQuantity()', function () {
-    it('gets quantity of item', function () {
-        wish(ship.getQuantity('Water') === 10);
-    });
-});
-describe('getCash()', function () {
-    it('gets the ship cash', function () {
-        wish(ship.getCash() === 1000);
-    });
-});
-describe('getItem()', function () {
-    it('returns a single cargo item', function () {
-        wish(deepEqual(ship.getItem('Water'), { resource: 'Water', quantity: 10 }));
-    });
-});
-describe('spaceCargo()', function () {
-    it('empties the cargo bay', function () {
-        wish(deepEqual(ship.spaceCargo(), []));
-    });
-});
-describe('updateCash()', function () {
-    it('updates the ship wallet', function () {
-        wish(ship.updateCash(50) === 1050);
-        wish(ship.updateCash(-25) === 1025);
-    });
-});
-describe('setLocation()', function () {
-    it('sets new ship location', function () {
-        var loc = 'Home';
-        wish(ship.setLocation(loc) === loc);
-    });
-});
 //# sourceMappingURL=ship.js.map

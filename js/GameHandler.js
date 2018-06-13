@@ -1,7 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ship_1 = require("./ship");
-var marketplace_1 = require("./marketplace");
 var locations;
 (function (locations) {
     locations["start"] = "Start";
@@ -10,6 +8,7 @@ var locations;
 var GameHandler = /** @class */ (function () {
     function GameHandler() {
         this.currentShip = {};
+        this.gameLocations = [];
     }
     GameHandler.prototype.setCurrentMarketplace = function (marketplace) {
         this.cuurentMarketplace = marketplace;
@@ -18,6 +17,11 @@ var GameHandler = /** @class */ (function () {
     GameHandler.prototype.setCurrentShip = function (ship) {
         this.currentShip = ship;
         return this.currentShip;
+    };
+    GameHandler.prototype.createMarkets = function () {
+        for (var market in Object.keys(locations)) {
+            this.gameLocations.push(market);
+        }
     };
     GameHandler.prototype.buyingItem = function (itemName, quantity) {
         if (quantity <= this.cuurentMarketplace.getQuantity(itemName)) {
@@ -50,48 +54,4 @@ var GameHandler = /** @class */ (function () {
 }());
 exports.GameHandler = GameHandler;
 ;
-var gameHandler = new GameHandler();
-var ship = new ship_1.Ship(locations.start);
-var marketplace = new marketplace_1.Marketplace(locations.start);
-var wish = require('wish');
-var deepEqual = require('deep-equal');
-describe('setCurrentShip()', function () {
-    it('sets ship to current ship', function () {
-        wish(!deepEqual(gameHandler.setCurrentShip(ship), {}));
-    });
-});
-describe('setCurrentMarketplace()', function () {
-    it('sets current marketplace', function () {
-        wish(!deepEqual(gameHandler.setCurrentMarketplace(marketplace), {}));
-    });
-});
-describe('currentShip.getCash()', function () {
-    it('gets the ship cash', function () {
-        wish(gameHandler.currentShip.getCash() === 1000);
-    });
-});
-describe('buyingItem()', function () {
-    it('adds quantity of item to ship and charges the cost', function () {
-        var shipCashBefore = gameHandler.currentShip.getCash();
-        var marketQtyBefore = gameHandler.cuurentMarketplace.getQuantity('Helium');
-        wish(gameHandler.buyingItem('Helium', 5) === true);
-        wish(deepEqual(gameHandler.currentShip.getItems(), [{ resource: 'Water', quantity: 10 },
-            { resource: 'Helium', quantity: 5 }]));
-        wish(shipCashBefore - 500 === gameHandler.currentShip.getCash());
-        wish(marketQtyBefore - 5 === gameHandler.cuurentMarketplace.getQuantity('Helium'));
-    });
-});
-describe('sellingItem()', function () {
-    it('sells ship items to the Marketplace', function () {
-        var shipCashBefore = gameHandler.currentShip.getCash();
-        var thorium = { resource: 'Thorium', quantity: 1 };
-        ship.addItem({ resource: 'Thorium', quantity: 1 });
-        var marketQtyBefore = gameHandler.cuurentMarketplace.getQuantity('Thorium');
-        var shipQtyBefore = gameHandler.currentShip.getQuantity('Thorium');
-        wish(gameHandler.sellingItem(thorium.resource, thorium.quantity) === true);
-        wish(gameHandler.currentShip.getCash() - shipCashBefore === gameHandler.cuurentMarketplace.getPrice('Thorium'));
-        wish(gameHandler.cuurentMarketplace.getQuantity('Thorium') - 1 === marketQtyBefore);
-        wish(gameHandler.currentShip.getQuantity('Thorium') + 1 === shipQtyBefore);
-    });
-});
 //# sourceMappingURL=GameHandler.js.map
