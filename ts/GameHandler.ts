@@ -19,7 +19,6 @@ export class GameHandler {
     setCurrentMarketplace(marketplace: Marketplace){
         this.currentMarketplace = marketplace;
         return this.currentMarketplace;
-        
     }
 
     setCurrentShip(ship: Ship){
@@ -63,6 +62,11 @@ export class GameHandler {
             return true;
         }
         return false;
+    }
+
+    changeMarket(newMarket: Marketplace){
+        this.setCurrentMarketplace(newMarket);
+        return true;
     }
 
 };

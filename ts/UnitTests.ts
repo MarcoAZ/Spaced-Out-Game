@@ -5,8 +5,8 @@ import {locations} from './GameHandler';
 
 
 let gameHandler = new GameHandler();
-let ship = new Ship(locations.Start.toString());
-let marketplace = new Marketplace(locations.Start.toString());
+let ship = new Ship(locations.Start);
+let marketplace = new Marketplace(locations.Start);
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
@@ -183,4 +183,16 @@ describe('createMarkets()', function(){
         const testGH = new GameHandler();
         wish(testGH.gameLocations.length > 1);
     })
-})
+});
+
+describe('changeMarket()', function(){
+    it('switches current market to the new market', function(){
+        const testGH = new GameHandler();
+        const kandinsky = new Marketplace(locations.Kandinsky);
+        const changedMarket = testGH.changeMarket(kandinsky);
+        
+        wish(changedMarket === true);
+        wish(deepEqual(testGH.currentMarketplace, kandinsky));
+
+    });
+});

@@ -54,6 +54,10 @@ var GameHandler = /** @class */ (function () {
         }
         return false;
     };
+    GameHandler.prototype.changeMarket = function (newMarket) {
+        this.setCurrentMarketplace(newMarket);
+        return true;
+    };
     return GameHandler;
 }());
 exports.GameHandler = GameHandler;
