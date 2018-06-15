@@ -5,8 +5,8 @@ var marketplace_1 = require("./marketplace");
 var GameHandler_1 = require("./GameHandler");
 var GameHandler_2 = require("./GameHandler");
 var gameHandler = new GameHandler_1.GameHandler();
-var ship = new ship_1.Ship(GameHandler_2.locations['Start'].toString());
-var marketplace = new marketplace_1.Marketplace(GameHandler_2.locations['Start'].toString());
+var ship = new ship_1.Ship(GameHandler_2.locations.Start.toString());
+var marketplace = new marketplace_1.Marketplace(GameHandler_2.locations.Start.toString());
 var wish = require('wish');
 var deepEqual = require('deep-equal');
 describe('_setBaseItems()', function () {
@@ -153,7 +153,6 @@ describe('sellingItem()', function () {
 describe('createMarkets()', function () {
     it('initiates market locations with at least 2 locations', function () {
         var testGH = new GameHandler_1.GameHandler();
-        console.log(testGH.gameLocations);
         wish(testGH.gameLocations.length > 1);
     });
 });

@@ -5,8 +5,8 @@ import {locations} from './GameHandler';
 
 
 let gameHandler = new GameHandler();
-let ship = new Ship(locations['Start'].toString());
-let marketplace = new Marketplace(locations['Start'].toString());
+let ship = new Ship(locations.Start.toString());
+let marketplace = new Marketplace(locations.Start.toString());
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
@@ -181,7 +181,6 @@ describe('sellingItem()', function(){
 describe('createMarkets()', function(){
     it('initiates market locations with at least 2 locations', function(){
         const testGH = new GameHandler();
-        console.log(testGH.gameLocations);
         wish(testGH.gameLocations.length > 1);
     })
 })

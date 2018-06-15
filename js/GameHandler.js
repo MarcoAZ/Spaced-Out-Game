@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var marketplace_1 = require("./marketplace");
 var locations;
 (function (locations) {
-    locations[locations["Start"] = 0] = "Start";
-    locations[locations["Kandinsky Station"] = 1] = "Kandinsky Station";
+    locations["Start"] = "Start";
+    locations["Kandinsky"] = "Kandinsky Station";
 })(locations = exports.locations || (exports.locations = {}));
 var GameHandler = /** @class */ (function () {
     function GameHandler() {
@@ -21,11 +21,9 @@ var GameHandler = /** @class */ (function () {
         return this.currentShip;
     };
     GameHandler.prototype.createMarkets = function () {
-        for (var market in Object.keys(locations)) {
-            if (locations[market] != undefined) {
-                var newMarket = new marketplace_1.Marketplace(locations[market]);
-                this.gameLocations.push(newMarket);
-            }
+        for (var market in locations) {
+            var newMarket = new marketplace_1.Marketplace(locations[market]);
+            this.gameLocations.push(newMarket);
         }
         return this.gameLocations;
     };

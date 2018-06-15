@@ -2,8 +2,8 @@ import {Ship} from './ship';
 import { Marketplace } from './marketplace';
 
 export enum locations {
-    "Start",
-    'Kandinsky Station'
+    Start =     "Start",
+    Kandinsky = 'Kandinsky Station'
 }
 
 export class GameHandler {
@@ -28,12 +28,10 @@ export class GameHandler {
     }
 
     createMarkets(){
-        for(let market in Object.keys(locations))
+        for(let market in locations)
         {
-            if(locations[market] != undefined){
-                let newMarket = new Marketplace(locations[market]);
-                this.gameLocations.push(newMarket);
-            }
+            let newMarket = new Marketplace(locations[market]);
+            this.gameLocations.push(newMarket);
         }
         return this.gameLocations;
     }
