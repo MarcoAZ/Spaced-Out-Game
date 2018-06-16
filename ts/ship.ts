@@ -1,12 +1,12 @@
 export class Ship {
-    constructor(location: string){
+    constructor(){
         this._items = this._setBaseItems();
-        this._location = location;
+        this._fuel = 10;
     };
 
     _items = [];
     _cash = 1000;
-    _location;
+    _fuel;
 
     _setBaseItems(){
         this.addItem({resource: 'Water', quantity: 10});
@@ -65,8 +65,12 @@ export class Ship {
         return this._items[itemIndex].quantity;
     }
 
-    setLocation(newLocation: string){
-        this._location = newLocation;
-        return this._location;
+    getFuel(){
+        return this._fuel;
+    }
+
+    updateFuel(quantity: number){
+        this._fuel += quantity;
+        return this._fuel;
     }
 };

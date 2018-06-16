@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Marketplace = /** @class */ (function () {
-    function Marketplace(name) {
+    function Marketplace(name, key) {
         this._items = [];
         this._items = this._setBaseItems();
         this.name = name;
+        this.key = key;
     }
     ;
     Marketplace.prototype._setBaseItems = function () {

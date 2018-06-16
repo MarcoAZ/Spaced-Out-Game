@@ -5,8 +5,8 @@ import {locations} from './GameHandler';
 
 
 let gameHandler = new GameHandler();
-let ship = new Ship(locations.Start);
-let marketplace = new Marketplace(locations.Start);
+let ship = new Ship();
+let marketplace = new Marketplace(locations.Start.name, locations.Start.key);
 
 let wish = require('wish');
 let deepEqual = require('deep-equal');
@@ -54,12 +54,6 @@ describe('updateCash()', function(){
     });
 });
 
-describe('setLocation()', function(){
-    it('sets new ship location', function(){
-        const loc = 'Home';
-        wish(ship.setLocation(loc) === loc);
-    });
-});
 
 describe('_setBaseItems()', function(){
     it('loads the base items of the game', function(){
@@ -186,13 +180,32 @@ describe('createMarkets()', function(){
 });
 
 describe('changeMarket()', function(){
-    it('switches current market to the new market', function(){
+    it('switches current market to the new market. costs fuel', function(){
         const testGH = new GameHandler();
-        const kandinsky = new Marketplace(locations.Kandinsky);
+        const kandinsky = new Marketplace(locations.Kandinsky.name, locations.Kandinsky.key);
+        testGH.setCurrentShip(ship);
+        testGH.setCurrentMarketplace(new Marketplace(locations.Start.name, locations.Start.key));
+
+        const fuelCost = testGH.distanceBetween(locations.Start.key, locations.Kandinsky.key);
+        const beforeFuel= testGH.currentShip.getFuel();
         const changedMarket = testGH.changeMarket(kandinsky);
         
         wish(changedMarket === true);
         wish(deepEqual(testGH.currentMarketplace, kandinsky));
-
+        wish(testGH.currentShip.getFuel() === beforeFuel - fuelCost);
     });
 });
+
+describe('updateFuel()', function(){
+    it('use or add fuel', function(){
+        let current = ship._fuel;
+        wish(ship.updateFuel(100) === current + 100);
+        wish(ship.updateFuel(-100) === current);
+    })
+});
+
+describe('distanceBetween()', function(){
+    it('gets distance between stations', function(){
+        wish(gameHandler.distanceBetween('Start', 'Kandinsky') === 4);
+    })
+})

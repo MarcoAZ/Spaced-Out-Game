@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Ship = /** @class */ (function () {
-    function Ship(location) {
+    function Ship() {
         this._items = [];
         this._cash = 1000;
         this._items = this._setBaseItems();
-        this._location = location;
+        this._fuel = 10;
     }
     ;
     Ship.prototype._setBaseItems = function () {
@@ -62,9 +62,12 @@ var Ship = /** @class */ (function () {
         this._items[itemIndex].quantity = currentQuantity >= (quantity * -1) ? currentQuantity + quantity : currentQuantity;
         return this._items[itemIndex].quantity;
     };
-    Ship.prototype.setLocation = function (newLocation) {
-        this._location = newLocation;
-        return this._location;
+    Ship.prototype.getFuel = function () {
+        return this._fuel;
+    };
+    Ship.prototype.updateFuel = function (quantity) {
+        this._fuel += quantity;
+        return this._fuel;
     };
     return Ship;
 }());

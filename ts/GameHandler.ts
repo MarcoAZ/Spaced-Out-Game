@@ -1,9 +1,19 @@
 import {Ship} from './ship';
 import { Marketplace } from './marketplace';
 
-export enum locations {
-    Start =     "Start",
-    Kandinsky = 'Kandinsky Station'
+export let locations = {
+    Start : {name: 'Start',
+             key: 'Start',
+             distances: {
+                 Kandinsky: 4
+             }
+    },
+    Kandinsky : {name: 'Kandinsky Station',
+                 key: 'Kandinsky',
+                 distances: {
+                 Start: 4
+                 }
+    }
 }
 
 export class GameHandler {
@@ -29,7 +39,7 @@ export class GameHandler {
     createMarkets(){
         for(let market in locations)
         {
-            let newMarket = new Marketplace(locations[market]);
+            let newMarket = new Marketplace(locations[market].name, locations[market].key);
             this.gameLocations.push(newMarket);
         }
         return this.gameLocations;
@@ -65,8 +75,17 @@ export class GameHandler {
     }
 
     changeMarket(newMarket: Marketplace){
-        this.setCurrentMarketplace(newMarket);
-        return true;
+        const fuelCost = this.distanceBetween(this.currentMarketplace.key, newMarket.key);
+        if(fuelCost <= this.currentShip.getFuel()){
+            this.currentShip.updateFuel(fuelCost * -1);
+            this.setCurrentMarketplace(newMarket);
+            return true;
+        }
+        return false;
+    }
+
+    distanceBetween(from: string, to: string){
+        return locations[from].distances[to];
     }
 
 };

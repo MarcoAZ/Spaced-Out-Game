@@ -1,11 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var marketplace_1 = require("./marketplace");
-var locations;
-(function (locations) {
-    locations["Start"] = "Start";
-    locations["Kandinsky"] = "Kandinsky Station";
-})(locations = exports.locations || (exports.locations = {}));
+exports.locations = {
+    Start: { name: 'Start',
+        key: 'Start',
+        distances: {
+            Kandinsky: 4
+        }
+    },
+    Kandinsky: { name: 'Kandinsky Station',
+        key: 'Kandinsky',
+        distances: {
+            Start: 4
+        }
+    }
+};
 var GameHandler = /** @class */ (function () {
     function GameHandler() {
         this.gameLocations = [];
@@ -21,8 +30,8 @@ var GameHandler = /** @class */ (function () {
         return this.currentShip;
     };
     GameHandler.prototype.createMarkets = function () {
-        for (var market in locations) {
-            var newMarket = new marketplace_1.Marketplace(locations[market]);
+        for (var market in exports.locations) {
+            var newMarket = new marketplace_1.Marketplace(exports.locations[market].name, exports.locations[market].key);
             this.gameLocations.push(newMarket);
         }
         return this.gameLocations;
@@ -55,8 +64,16 @@ var GameHandler = /** @class */ (function () {
         return false;
     };
     GameHandler.prototype.changeMarket = function (newMarket) {
-        this.setCurrentMarketplace(newMarket);
-        return true;
+        var fuelCost = this.distanceBetween(this.currentMarketplace.key, newMarket.key);
+        if (fuelCost <= this.currentShip.getFuel()) {
+            this.currentShip.updateFuel(fuelCost * -1);
+            this.setCurrentMarketplace(newMarket);
+            return true;
+        }
+        return false;
+    };
+    GameHandler.prototype.distanceBetween = function (from, to) {
+        return exports.locations[from].distances[to];
     };
     return GameHandler;
 }());

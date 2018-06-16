@@ -5,8 +5,8 @@ var marketplace_1 = require("./marketplace");
 var GameHandler_1 = require("./GameHandler");
 var GameHandler_2 = require("./GameHandler");
 var gameHandler = new GameHandler_1.GameHandler();
-var ship = new ship_1.Ship(GameHandler_2.locations.Start);
-var marketplace = new marketplace_1.Marketplace(GameHandler_2.locations.Start);
+var ship = new ship_1.Ship();
+var marketplace = new marketplace_1.Marketplace(GameHandler_2.locations.Start.name, GameHandler_2.locations.Start.key);
 var wish = require('wish');
 var deepEqual = require('deep-equal');
 describe('_setBaseItems()', function () {
@@ -43,12 +43,6 @@ describe('updateCash()', function () {
     it('updates the ship wallet', function () {
         wish(ship.updateCash(50) === 1050);
         wish(ship.updateCash(-25) === 1025);
-    });
-});
-describe('setLocation()', function () {
-    it('sets new ship location', function () {
-        var loc = 'Home';
-        wish(ship.setLocation(loc) === loc);
     });
 });
 describe('_setBaseItems()', function () {
@@ -157,12 +151,29 @@ describe('createMarkets()', function () {
     });
 });
 describe('changeMarket()', function () {
-    it('switches current market to the new market', function () {
+    it('switches current market to the new market. costs fuel', function () {
         var testGH = new GameHandler_1.GameHandler();
-        var kandinsky = new marketplace_1.Marketplace(GameHandler_2.locations.Kandinsky);
+        var kandinsky = new marketplace_1.Marketplace(GameHandler_2.locations.Kandinsky.name, GameHandler_2.locations.Kandinsky.key);
+        testGH.setCurrentShip(ship);
+        testGH.setCurrentMarketplace(new marketplace_1.Marketplace(GameHandler_2.locations.Start.name, GameHandler_2.locations.Start.key));
+        var fuelCost = testGH.distanceBetween(GameHandler_2.locations.Start.key, GameHandler_2.locations.Kandinsky.key);
+        var beforeFuel = testGH.currentShip.getFuel();
         var changedMarket = testGH.changeMarket(kandinsky);
         wish(changedMarket === true);
         wish(deepEqual(testGH.currentMarketplace, kandinsky));
+        wish(testGH.currentShip.getFuel() === beforeFuel - fuelCost);
+    });
+});
+describe('updateFuel()', function () {
+    it('use or add fuel', function () {
+        var current = ship._fuel;
+        wish(ship.updateFuel(100) === current + 100);
+        wish(ship.updateFuel(-100) === current);
+    });
+});
+describe('distanceBetween()', function () {
+    it('gets distance between stations', function () {
+        wish(gameHandler.distanceBetween('Start', 'Kandinsky') === 4);
     });
 });
 //# sourceMappingURL=UnitTests.js.map

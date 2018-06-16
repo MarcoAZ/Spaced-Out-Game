@@ -1,11 +1,13 @@
 export class Marketplace {
-    constructor(name:string){
+    constructor(name:string, key:string){
         this._items = this._setBaseItems();
         this.name = name;
+        this.key = key;
     };
 
     _items = [];
     name;
+    key
 
     _setBaseItems(){
         this.addItem({resource: 'Thorium', price: 200, quantity: 20});
